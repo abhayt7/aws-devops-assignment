@@ -4,23 +4,35 @@ metadata:
   name: demo-app
 spec:
   replicas: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+
   selector:
     matchLabels:
       app: demo-app
+
   template:
     metadata:
       labels:
         app: demo-app
+
     spec:
       containers:
         - name: demo-app
           image: IMAGE_PLACEHOLDER
+
           ports:
             - containerPort: 5000
+
           readinessProbe:
             httpGet:
               path: /health
               port: 5000
+
           resources:
             requests:
               cpu: 100m
